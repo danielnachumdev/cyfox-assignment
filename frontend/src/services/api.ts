@@ -1,15 +1,16 @@
 import axios, { AxiosError } from 'axios';
-import type { 
-  Project, 
-  Bug, 
-  CreateProjectRequest, 
-  CreateBugRequest, 
+import type {
+  Project,
+  Bug,
+  CreateProjectRequest,
+  CreateBugRequest,
   UpdateBugRequest,
   ApiResponse,
   BugStatistics
 } from '../types';
 
-const API_URL = 'http://localhost:3000/api';
+// Use relative URL to work in both development and Docker environments
+const API_URL = '/api';
 
 const api = axios.create({
   baseURL: API_URL,
