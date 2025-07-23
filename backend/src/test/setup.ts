@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { runMigrations, resetDatabase } from '../database/migrate';
+import { resetDatabase } from '../database/migrate';
 import { seedDatabase } from '../database/seed';
 
 // Test database configuration

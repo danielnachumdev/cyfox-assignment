@@ -20,8 +20,8 @@ export async function getBugsByProject(
 
     // Build WHERE clause for filters
     const conditions: Record<string, any> = { project_id: projectId };
-    if (filters['severity']) conditions.severity = filters['severity'];
-    if (filters['status']) conditions.status = filters['status'];
+    if (filters['severity']) conditions['severity'] = filters['severity'];
+    if (filters['status']) conditions['status'] = filters['status'];
 
     const { whereClause, params } = buildWhereClause(conditions);
     const orderByClause = buildOrderByClause(

@@ -40,8 +40,8 @@ export class ConflictError extends AppError {
 export class DatabaseError extends AppError {
   constructor(message: string, originalError?: Error) {
     super(message, 500, 'DATABASE_ERROR', false);
-    if (originalError) {
-      this.stack = originalError.stack || this.stack;
+    if (originalError && originalError.stack) {
+      this.stack = originalError.stack;
     }
   }
 }

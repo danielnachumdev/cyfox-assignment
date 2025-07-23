@@ -7,6 +7,7 @@ import { createRequestLogger, addResponseTime } from './middleware/request-logge
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
 // Database connection is initialized in index.ts
 import { checkDatabaseHealth } from './database/utils';
+import { setupSwagger } from './utils/swagger';
 
 // Import routes
 import projectRoutes from './routes/project-routes';
@@ -83,6 +84,9 @@ app.get('/api', (_req, res) => {
 // Mount API routes
 app.use('/api/projects', projectRoutes);
 app.use('/api/projects', bugRoutes);
+
+// Setup Swagger documentation
+setupSwagger(app);
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);
