@@ -8,6 +8,7 @@ A full-stack bug tracking application with React frontend and Node.js backend.
 - [Assignment Requirements & Notes](#-assignment-requirements--notes)
 - [Application Architecture](#-application-architecture)
 - [Application Features](#-application-features)
+- [Project Journey](#-project-journey)
 - [Documentation](#-documentation)
 - [License](#-license)
 
@@ -79,6 +80,76 @@ Choose your preferred method to run the application:
 - **Search & Filter**: Find bugs by project, status, or severity
 - **Statistics**: View bug statistics and summaries
 - **RESTful API**: Complete API with Swagger documentation
+
+## 🚀 Project Journey
+
+This section documents the rough journey I took to create this project and the AI prompts I used throughout the development process. This provides insight into the iterative development approach and how AI assistance was leveraged to build a complete full-stack application.
+
+### Development Phases
+
+**Phase 1: System Design & Planning**
+- Used Kiro IDE for better system design capabilities
+- Parsed assignment instructions from DOCX to MD format for AI readability
+- Pre-decided technology stack: React + Vite + TypeScript (frontend), Node.js + Express (backend), PostgreSQL (database)
+- AI-assisted system design with iterative document creation and approval
+
+**Phase 2: Backend & Database Implementation**
+- Database schema design and implementation
+- Backend API development with Express.js
+- Swagger UI integration for manual testing and API documentation
+- Core functionality implementation before frontend development
+
+**Phase 3: Frontend Development**
+- React application setup and component architecture
+- API integration with backend services
+- UI/UX implementation with Material-UI
+- Standalone frontend testing and validation
+
+**Phase 4: Integration & Containerization**
+- Unified development environment setup
+- Docker containerization for both frontend and backend
+- Docker Compose orchestration for full-stack deployment
+- Iterative testing and refinement for both development and production modes
+
+### AI-Assisted Development Process
+
+**Tool Choice**: Kiro IDE
+- **Reasoning**: Better system design capabilities compared to other AI coding assistants
+- **Benefit**: More structured approach to application architecture
+
+**Documentation Workflow**:
+1. **Requirements.md**: Detailed instructions document created iteratively with AI
+2. **Design.md**: System architecture and technical specifications
+3. **Tasks.md**: Implementation roadmap and development tasks
+4. **User Approval**: Each document reviewed and approved before proceeding
+
+**Development Approach**:
+1. **Backend-First Strategy**: Core backend and database implementation before frontend
+2. **Manual Testing**: Swagger UI integration for immediate API testing
+3. **Iterative Refinement**: Continuous improvement of both layers
+4. **Containerization**: Docker setup for unified deployment
+
+### Key Development Decisions
+
+**Technology Stack Pre-selection**:
+- **REST vs GraphQL**: Chose REST for simplicity and project scope
+- **React vs Angular**: Chose React for familiarity and TypeScript support
+- **Database**: PostgreSQL for reliability and ACID compliance
+
+**Development Workflow**:
+- **Spec Mode**: Used for system design and planning
+- **Vibe Mode**: Switched to for actual code implementation
+- **Iterative Testing**: Manual validation at each stage
+- **Unified Setup**: Root-level scripts for easy development startup
+
+### Key Insights from the Journey
+
+- **AI Collaboration**: Kiro IDE provided excellent system design capabilities and iterative development support
+- **Backend-First Approach**: Core functionality implementation before UI development proved effective
+- **Manual Testing**: Swagger UI integration allowed immediate validation of backend functionality
+- **Containerization**: Docker setup enabled consistent development and deployment environments
+- **Time Management**: Pre-decided technology choices and structured workflow helped meet deadlines
+- **Learning Outcomes**: Gained practical experience with full-stack development, containerization, and AI-assisted development workflows
 
 
 
