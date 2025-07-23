@@ -37,18 +37,23 @@
     - Create database utility functions for queries
     - _Requirements: 5.1_
 
-  - [-] 2.3 Create seed data for development
+  - [x] 2.3 Create seed data for development
+
 
     - Write seed scripts with sample projects and bugs
     - Implement database reset functionality for testing
     - _Requirements: 1.1, 3.1_
 
-- [ ] 3. Backend API core implementation
-  - [ ] 3.1 Set up Express server with middleware
+- [x] 3. Backend API core implementation
+
+
+  - [x] 3.1 Set up Express server with middleware
+
     - Configure Express server with CORS, helmet, and morgan
     - Implement error handling middleware
     - Set up request validation middleware with express-validator
     - _Requirements: 5.5, 6.4_
+
 
   - [ ] 3.2 Implement Projects API endpoints
     - Create GET /api/projects endpoint to list all projects
@@ -57,19 +62,29 @@
     - Implement input validation for project creation
     - _Requirements: 1.1, 1.2, 1.3, 5.1_
 
-  - [ ] 3.3 Implement Bugs API endpoints
+  - [x] 3.3 Implement Bugs API endpoints
+
     - Create GET /api/projects/:projectId/bugs endpoint to list bugs
     - Create POST /api/projects/:projectId/bugs endpoint to create bug
     - Create GET /api/projects/:projectId/bugs/:bugId endpoint for specific bug
     - Create PUT /api/projects/:projectId/bugs/:bugId endpoint to update bug
+
+
+
+
     - Implement input validation for bug operations
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 4.1, 4.2, 4.3, 5.2, 5.3, 5.4_
 
-- [ ] 4. Backend testing implementation
+- [x] 4. Backend testing implementation
+
+
   - [ ] 4.1 Set up testing framework and utilities
     - Configure Jest for unit and integration testing
     - Set up Supertest for API endpoint testing
     - Create test database configuration
+
+
+
     - _Requirements: 5.5_
 
   - [ ] 4.2 Write API endpoint tests
