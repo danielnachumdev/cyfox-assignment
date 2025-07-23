@@ -3,17 +3,57 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Database configuration for Docker PostgreSQL
-const dbConfig = {
-  host: process.env['DB_HOST'] || 'localhost',
-  port: parseInt(process.env['DB_PORT'] || '5432'),
-  database: process.env['DB_NAME'] || 'bugtracker',
-  user: process.env['DB_USER'] || 'bugtracker',
-  password: process.env['DB_PASSWORD'] || 'bugtracker',
-  max: 20, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
-};
+// Parse DATABASE_URL if provided, otherwise use individual environment variables
+function getDbConfig() {
+  const databaseUrl = process.env['DATABASE_URL'];
+
+  if (databaseUrl) {
+    // Parse DATABASE_URL format: postgresql://user:password@host:port/database
+    const url = new URL(databaseUrl);
+
+    // If running locally (not in Docker), use localhost instead of container hostname
+    const host = url.hostname === 'postgres' && process.env['NODE_ENV'] !== 'production'
+      ? 'localhost'
+      : url.hostname;
+
+    return {
+      host,
+      port: parseInt(url.port || '5432'),
+      database: url.pathname.slice(1), // Remove leading slash
+      user: url.username,
+      password: url.password,
+      max: 20, // Maximum number of clients in the pool
+      idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+      connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
+    };
+  }
+
+  // Fallback to individual environment variables
+  return {
+    host: process.env['DB_HOST'] || 'localhost',
+    port: parseInt(process.env['DB_PORT'] || '5432'),
+    database: process.env['DB_NAME'] || 'bugtracker',
+    user: process.env['DB_USER'] || 'bugtracker',
+    password: process.env['DB_PASSWORD'] || 'bugtracker',
+    max: 20, // Maximum number of clients in the pool
+    idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+    connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
+  };
+}
+
+// Database configuration
+const dbConfig = getDbConfig();
+
+// Log database configuration (without password for security)
+if (process.env['NODE_ENV'] === 'development') {
+  console.log('🔧 Database configuration:', {
+    host: dbConfig.host,
+    port: dbConfig.port,
+    database: dbConfig.database,
+    user: dbConfig.user,
+    // password: '***' // Don't log password
+  });
+}
 
 // Create connection pool
 const pool = new Pool(dbConfig);

@@ -7,7 +7,7 @@
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc && npm run copy-migrations",
-    "copy-migrations": "powershell -Command \"New-Item -ItemType Directory -Path dist/database/migrations -Force; Copy-Item -Path src/database/migrations/*.sql -Destination dist/database/migrations -Force\"",
+    "copy-migrations": "node scripts/copy-migrations.js",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage",

@@ -5,13 +5,52 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = new Pool({
-  host: process.env['DB_HOST'] || 'localhost',
-  port: parseInt(process.env['DB_PORT'] || '5432'),
-  database: process.env['DB_NAME'] || 'bug_tracker',
-  user: process.env['DB_USER'] || 'postgres',
-  password: process.env['DB_PASSWORD'] || 'postgres',
-});
+// Parse DATABASE_URL if provided, otherwise use individual environment variables
+function getDbConfig() {
+  const databaseUrl = process.env['DATABASE_URL'];
+
+  if (databaseUrl) {
+    // Parse DATABASE_URL format: postgresql://user:password@host:port/database
+    const url = new URL(databaseUrl);
+
+    // If running locally (not in Docker), use localhost instead of container hostname
+    const host = url.hostname === 'postgres' && process.env['NODE_ENV'] !== 'production'
+      ? 'localhost'
+      : url.hostname;
+
+    return {
+      host,
+      port: parseInt(url.port || '5432'),
+      database: url.pathname.slice(1), // Remove leading slash
+      user: url.username,
+      password: url.password,
+    };
+  }
+
+  // Fallback to individual environment variables
+  return {
+    host: process.env['DB_HOST'] || 'localhost',
+    port: parseInt(process.env['DB_PORT'] || '5432'),
+    database: process.env['DB_NAME'] || 'bugtracker',
+    user: process.env['DB_USER'] || 'bugtracker',
+    password: process.env['DB_PASSWORD'] || 'bugtracker',
+  };
+}
+
+const dbConfig = getDbConfig();
+
+// Log database configuration (without password for security)
+if (process.env['NODE_ENV'] === 'development') {
+  console.log('🔧 Database configuration for migrations:', {
+    host: dbConfig.host,
+    port: dbConfig.port,
+    database: dbConfig.database,
+    user: dbConfig.user,
+    // password: '***' // Don't log password
+  });
+}
+
+const pool = new Pool(dbConfig);
 
 interface Migration {
   id: number;
