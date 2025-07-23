@@ -2,6 +2,15 @@
 
 A full-stack bug tracking application with React frontend and Node.js backend.
 
+## 📋 Table of Contents
+
+- [Quick Start](#-quick-start)
+- [Assignment Requirements & Notes](#-assignment-requirements--notes)
+- [Application Architecture](#-application-architecture)
+- [Application Features](#-application-features)
+- [Documentation](#-documentation)
+- [License](#-license)
+
 ## 🚀 Quick Start
 
 Choose your preferred method to run the application:
@@ -13,17 +22,12 @@ Choose your preferred method to run the application:
 - Docker (for PostgreSQL database)
 
 **Steps:**
-1. **Install all dependencies and setup database:**
+1. **Install dependencies:**
    ```bash
-   npm run install
+   npm install
    ```
-   This will automatically:
-   - Install backend and frontend dependencies
-   - Start PostgreSQL container
-   - Run database migrations
-   - Seed the database with sample data
 
-2. **Start both frontend and backend development servers:**
+2. **Start development servers:**
    ```bash
    npm run dev
    ```
@@ -32,13 +36,7 @@ Choose your preferred method to run the application:
    - Backend server on http://localhost:3000
    - Frontend development server on http://localhost:3001
 
-**Database Configuration:**
-- Database: `bugtracker`
-- Username: `bugtracker`
-- Password: `bugtracker`
-- Port: 5432
-
-### Option 2: Run with Docker (Production Ready)
+### Option 2: Run with Docker
 
 **Prerequisites:**
 - Docker and Docker Compose installed
@@ -49,92 +47,18 @@ Choose your preferred method to run the application:
    docker-compose up --build
    ```
 
-2. **Seed the database with sample data:**
-   ```bash
-   docker-compose exec backend npm run seed
-   ```
-
-3. **Access the application:**
+2. **Access the application:**
    - Frontend: http://localhost:80
    - Backend API: http://localhost:3000
    - API Documentation: http://localhost:3000/api-docs
 
-## 📋 Available Commands
 
-### Development Commands
 
-**From Source:**
-- `npm run dev` - Start both frontend and backend development servers
-- `npm run build` - Build both frontend and backend for production
-- `npm run start` - Start both frontend and backend in production mode
-- `npm run seed` - Seed the database with sample data
 
-**Docker:**
-- `docker-compose up --build` - Build and start all services
-- `docker-compose up -d` - Start services in background
-- `docker-compose down` - Stop all services
-- `docker-compose logs -f` - View logs
-- `docker-compose exec backend npm run seed` - Seed database
 
-### Database Commands
 
-**From Source:**
-- `npm run db:up` - Start PostgreSQL container
-- `npm run db:down` - Stop PostgreSQL container
-- `npm run db:setup` - Complete database setup (start DB, run migrations, seed data)
-- `npm run db:wait` - Wait for PostgreSQL to be ready
-- `npm run db:migrate` - Run database migrations
-- `npm run db:reset` - Reset database (remove volumes and re-setup)
-- `npm run db:logs` - View PostgreSQL logs
 
-**Docker:**
-- `docker-compose exec postgres psql -U bugtracker -d bugtracker` - Access PostgreSQL shell
-- `docker-compose exec backend npm run seed` - Seed database
-- `docker-compose exec backend npm run seed reset` - Reset and reseed database
-
-### Installation Commands
-
-- `npm run install` - Install dependencies for root, backend, and frontend (runs in parallel)
-- `npm run install:backend` - Install backend dependencies only
-- `npm run install:frontend` - Install frontend dependencies only
-
-## 🔧 Environment Variables
-
-### From Source Configuration
-
-The application uses the following default database configuration:
-- `DB_HOST`: localhost
-- `DB_PORT`: 5432
-- `DB_NAME`: bugtracker
-- `DB_USER`: bugtracker
-- `DB_PASSWORD`: bugtracker
-
-You can override these by setting environment variables in a `.env` file in the backend directory.
-
-### Docker Configuration
-
-Docker automatically configures the environment:
-- `NODE_ENV`: production
-- `PORT`: 3000
-- `DATABASE_URL`: postgresql://bugtracker:bugtracker@postgres:5432/bugtracker
-
-## 🧪 Testing
-
-For testing, the application uses a separate test database:
-- `TEST_DB_NAME`: bugtracker_test
-
-**From Source:**
-```bash
-cd backend
-npm test
-```
-
-**Docker:**
-```bash
-docker-compose exec backend npm test
-```
-
-## 🏗️ Architecture
+## 🏗️ Application Architecture
 
 ### From Source (Development)
 - **Frontend**: React with Vite dev server (port 3001)
@@ -156,74 +80,105 @@ docker-compose exec backend npm test
 - **Statistics**: View bug statistics and summaries
 - **RESTful API**: Complete API with Swagger documentation
 
-## 🔍 Troubleshooting
 
-### Common Issues
-
-**From Source:**
-1. **Port conflicts**: Ensure ports 3000, 3001, and 5432 are available
-2. **Database connection**: Make sure PostgreSQL is running
-3. **Dependencies**: Run `npm run install` to install all dependencies
-
-**Docker:**
-1. **Port conflicts**: Ensure ports 80, 3000, and 5432 are available
-2. **Build failures**: Check Docker logs with `docker-compose logs`
-3. **Database connection**: Wait for PostgreSQL to be healthy
-
-### Debugging Commands
-
-**From Source:**
-```bash
-# Check if services are running
-lsof -i :3000  # Backend
-lsof -i :3001  # Frontend
-lsof -i :5432  # Database
-
-# View logs
-cd backend && npm run dev
-cd frontend && npm run dev
-```
-
-**Docker:**
-```bash
-# Check service status
-docker-compose ps
-
-# View logs
-docker-compose logs -f [service-name]
-
-# Access container shell
-docker-compose exec [service-name] sh
-```
 
 ## 📚 Documentation
 
 - **API Documentation**: Available at http://localhost:3000/api-docs when running
-- **Docker Setup**: See [DOCKER.md](./DOCKER.md) for detailed Docker instructions
 - **Database Schema**: Check `backend/src/database/migrations/` for schema details
 
-## 🚀 Production Deployment
+## 📋 Assignment Requirements & Notes
 
-### From Source
-1. Set up PostgreSQL server
-2. Configure environment variables
-3. Run `npm run build` to build both frontend and backend
-4. Use a process manager like PM2 for the backend
-5. Serve frontend with a web server like Nginx
+This project was built according to the bug tracking assignment requirements:
 
-### Docker (Recommended)
-1. Ensure Docker and Docker Compose are installed
-2. Run `docker-compose up --build -d` for production deployment
-3. Configure reverse proxy and SSL if needed
-4. Set up monitoring and logging
+### ✅ Functional Requirements Checklist
 
-## 🤝 Contributing
+**Backend Requirements:**
+- ✅ **REST API** - Implemented with Express.js and TypeScript
+- ✅ **Create project endpoint** - POST /api/projects
+- ✅ **Create bug endpoint** - POST /api/projects/:projectId/bugs
+- ✅ **List bugs per project** - GET /api/projects/:projectId/bugs
+- ✅ **Basic filtering/sorting** - By severity, status, and creation date
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests: `npm test`
-5. Submit a pull request
+**Frontend Requirements:**
+- ✅ **Page 1: List projects** - Projects page with project cards
+- ✅ **Page 2: Project details with bugs** - Project detail page with bug list
+- ✅ **UI library** - Material-UI (MUI) components
+
+**Bonus Requirements:**
+- ✅ **Edit bug status/severity** - PUT /api/projects/:projectId/bugs/:bugId
+- ✅ **Basic validation and error handling** - Comprehensive validation on both client and server
+
+### Technology Choices & Reasoning
+
+**Backend Technology Choices:**
+
+**API Type**: REST API
+- **Reasoning**: This project is simple enough that GraphQL's overhead isn't worth it. REST provides a straightforward, stateless interface that's easy to understand and implement. It follows standard HTTP methods and conventions, making it straightforward for frontend integration and future maintenance.
+
+**Database**: PostgreSQL
+- **Reasoning**: PostgreSQL offers robust ACID compliance, excellent performance for relational data, and strong support for complex queries. It's well-suited for bug tracking where data integrity is crucial.
+
+**Frontend Technology Choices:**
+
+**Framework**: React
+- **Reasoning**: Honestly, I had very little time and I'm familiar with React when using TypeScript, which made the project more feasible to complete. I had a deadline and managed to hold it. React provides a component-based architecture that's perfect for building reusable UI elements like bug cards and project lists.
+
+**UI Library**: Material-UI (MUI)
+- **Reasoning**: Used MUI for consistent, professional UI components. It provides a comprehensive set of pre-built components that follow Material Design principles, ensuring a polished and accessible user interface.
+
+### Database Schema Trade-offs
+
+**Projects Table**:
+- Simple structure with id, name, description, and timestamps
+- **Trade-off**: Kept minimal to focus on core functionality while allowing for future expansion
+
+**Bugs Table**:
+- Includes title, description, severity, status, project_id, and timestamps
+- **Trade-off**: Used enum types for severity and status to ensure data consistency while maintaining flexibility
+
+### Validation and Error Handling
+
+**Backend Validation:**
+- **express-validator** for comprehensive input validation
+- **Custom validation middleware** for consistent error handling
+- **Field-level validation** for all API endpoints
+- **Database constraint validation** with proper error messages
+
+**Frontend Validation:**
+- **Form validation** with immediate feedback
+- **Client-side validation** for better user experience
+- **Error boundaries** for React components
+- **Toast notifications** for API errors
+
+**Error Handling:**
+- **Global error middleware** for consistent error responses
+- **Custom error classes** (AppError, ValidationError, DatabaseError)
+- **PostgreSQL error handling** for database constraint violations
+- **Structured error responses** with error codes and details
+
+### Testing Implementation
+
+**Backend Tests:**
+- **Unit Tests**: `backend/tests/app.test.ts` - Application health and routing
+- **Integration Tests**: `backend/tests/projects.test.ts` - Project API endpoints (234 lines)
+- **Integration Tests**: `backend/tests/bugs.test.ts` - Bug API endpoints (404 lines)
+- **Test Coverage**: Comprehensive testing of all CRUD operations, validation, and error scenarios
+
+**Frontend Tests:**
+- **Component Tests**: `frontend/src/test/ProjectCard.test.tsx` - Project card component rendering
+- **Testing Framework**: Vitest with React Testing Library
+- **Test Setup**: Proper test environment configuration
+
+### Additional Features Implemented
+
+**Beyond Requirements**:
+- Bug editing capabilities
+- Advanced filtering and search
+- Statistics and analytics
+- Comprehensive error handling and validation
+- Docker containerization for easy deployment
+- Complete test suite with unit and integration tests
 
 ## 📄 License
 
