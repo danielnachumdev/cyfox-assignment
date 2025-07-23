@@ -1,8 +1,4 @@
-import dotenv from 'dotenv';
 import { setupTestDatabase, teardownTestDatabase, clearTestData } from './setup';
-
-// Load test environment variables
-dotenv.config({ path: '.env.test' });
 
 // Global test setup
 beforeAll(async () => {
