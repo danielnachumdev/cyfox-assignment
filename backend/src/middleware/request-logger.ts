@@ -30,7 +30,7 @@ const productionFormat = ':remote-addr - :remote-user [:date[clf]] ":method :url
  * Create request logger middleware
  */
 export function createRequestLogger() {
-  const format = process.env.NODE_ENV === 'production' 
+  const format = process.env['NODE_ENV'] === 'production' 
     ? productionFormat 
     : developmentFormat;
 

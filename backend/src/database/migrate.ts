@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env['DATABASE_URL'],
 });
 
 interface Migration {
@@ -48,7 +48,7 @@ function getMigrationFiles(): Migration[] {
     .sort();
 
   return files.map(filename => {
-    const id = parseInt(filename.split('_')[0]);
+    const id = parseInt(filename.split('_')[0] || '0');
     const sql = fs.readFileSync(path.join(migrationsDir, filename), 'utf8');
     return { id, filename, sql };
   });

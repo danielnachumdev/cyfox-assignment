@@ -14,7 +14,7 @@ export function sendSuccess<T>(
   const response: ApiResponse<T> = {
     success: true,
     data,
-    message,
+    ...(message && { message }),
   };
 
   res.status(statusCode).json(response);
@@ -43,7 +43,7 @@ export function sendError(
     error: {
       message: error.message,
       code,
-      details,
+      ...(details && { details }),
     },
   };
 
