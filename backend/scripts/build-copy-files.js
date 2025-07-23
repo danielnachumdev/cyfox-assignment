@@ -48,9 +48,39 @@ function copyMigrations() {
     }
 }
 
-// Run the script if called directly
-if (require.main === module) {
-    copyMigrations();
+/**
+ * Copy health.js file from src to dist directory
+ */
+function copyHealthFile() {
+    const srcHealthFile = path.join(__dirname, '../src/health.js');
+    const destHealthFile = path.join(__dirname, '../dist/health.js');
+
+    try {
+        if (fs.existsSync(srcHealthFile)) {
+            fs.copyFileSync(srcHealthFile, destHealthFile);
+            console.log('📄 Copied: health.js');
+        } else {
+            console.log('⚠️  health.js file not found in src directory');
+        }
+    } catch (error) {
+        console.error('❌ Error copying health.js file:', error.message);
+        process.exit(1);
+    }
 }
 
-module.exports = { copyMigrations }; 
+/**
+ * Copy all necessary files from src to dist directory
+ */
+function copyAllFiles() {
+    console.log('🚀 Starting file copy process...');
+    copyMigrations();
+    copyHealthFile();
+    console.log('✅ File copy process completed');
+}
+
+// Run the script if called directly
+if (require.main === module) {
+    copyAllFiles();
+}
+
+module.exports = { copyMigrations, copyHealthFile, copyAllFiles }; 

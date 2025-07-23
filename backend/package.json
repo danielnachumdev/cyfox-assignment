@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc && npm run copy-migrations",
-    "copy-migrations": "node scripts/copy-migrations.js",
+    "build": "tsc && npm run copy-files",
+    "copy-files": "node scripts/build-copy-files.js",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage",
