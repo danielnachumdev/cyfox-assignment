@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   Container, 
@@ -10,16 +10,19 @@ import {
   IconButton,
   Breadcrumbs,
   Link,
-  Grid
+  Grid,
+  Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { getProject, getBugsByProject, getBugStatistics } from '../services/api';
-import type { Project, Bug, BugStatistics } from '../types';
+import type { Project, Bug, BugStatistics, BugSeverity, BugStatus } from '../types';
 import BugCard from '../components/BugCard';
 import CreateBugDialog from '../components/CreateBugDialog';
 import BugDetailsDialog from '../components/BugDetailsDialog';
 import BugStatisticsCard from '../components/BugStatisticsCard';
+import BugFilters from '../components/BugFilters';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorAlert from '../components/ErrorAlert';
 import { formatDate } from '../utils/formatters';
@@ -36,6 +39,13 @@ const ProjectDetailsPage = () => {
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [selectedBug, setSelectedBug] = useState<Bug | null>(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [filters, setFilters] = useState<{
+    severity: BugSeverity | 'all';
+    status: BugStatus | 'all';
+  }>({
+    severity: 'all',
+    status: 'all'
+  });
 
   const id = parseInt(projectId || '0');
 
@@ -80,6 +90,19 @@ const ProjectDetailsPage = () => {
     setSelectedBug(bug);
     setDetailsDialogOpen(true);
   };
+  
+  const handleFilterChange = (newFilters: { severity: BugSeverity | 'all', status: BugStatus | 'all' }) => {
+    setFilters(newFilters);
+  };
+  
+  // Filter bugs based on selected filters
+  const filteredBugs = useMemo(() => {
+    return bugs.filter(bug => {
+      const matchesSeverity = filters.severity === 'all' || bug.severity === filters.severity;
+      const matchesStatus = filters.status === 'all' || bug.status === filters.status;
+      return matchesSeverity && matchesStatus;
+    });
+  }, [bugs, filters]);
 
   if (loading) {
     return (
@@ -178,7 +201,14 @@ const ProjectDetailsPage = () => {
             <Typography variant="h5">
               Bugs
             </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
+                {filteredBugs.length} of {bugs.length} bugs
+              </Typography>
+            </Box>
           </Box>
+          
+          <BugFilters onFilterChange={handleFilterChange} />
           
           <Divider sx={{ mb: 3 }} />
           
@@ -199,8 +229,33 @@ const ProjectDetailsPage = () => {
                 Add Bug
               </Button>
             </Paper>
+          ) : filteredBugs.length === 0 ? (
+            <Paper sx={{ p: 4, textAlign: 'center' }}>
+              <Typography variant="h6" gutterBottom>
+                No bugs match the selected filters
+              </Typography>
+              <Typography variant="body1" color="text.secondary" paragraph>
+                Try changing your filter criteria or add a new bug.
+              </Typography>
+              <Button 
+                variant="outlined" 
+                color="primary" 
+                onClick={() => setFilters({ severity: 'all', status: 'all' })}
+                sx={{ mr: 2 }}
+              >
+                Clear Filters
+              </Button>
+              <Button 
+                variant="contained" 
+                color="primary" 
+                startIcon={<AddIcon />}
+                onClick={() => setCreateDialogOpen(true)}
+              >
+                Add Bug
+              </Button>
+            </Paper>
           ) : (
-            bugs.map((bug) => (
+            filteredBugs.map((bug) => (
               <BugCard 
                 key={bug.id} 
                 bug={bug} 
