@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  Container, 
-  Typography, 
-  Button, 
+import {
+  Container,
+  Typography,
+  Button,
   Box,
   Paper,
   Divider,
@@ -11,11 +11,11 @@ import {
   Breadcrumbs,
   Link,
   Grid,
-  Chip
+  // Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import FilterListIcon from '@mui/icons-material/FilterList';
+// import FilterListIcon from '@mui/icons-material/FilterList';
 import { getProject, getBugsByProject, getBugStatistics } from '../services/api';
 import type { Project, Bug, BugStatistics, BugSeverity, BugStatus } from '../types';
 import BugCard from '../components/BugCard';
@@ -30,7 +30,7 @@ import { formatDate } from '../utils/formatters';
 const ProjectDetailsPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  
+
   const [project, setProject] = useState<Project | null>(null);
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [statistics, setStatistics] = useState<BugStatistics | null>(null);
@@ -51,18 +51,18 @@ const ProjectDetailsPage = () => {
 
   const fetchProjectData = async () => {
     if (!id) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       // Fetch project details, bugs, and statistics in parallel
       const [projectData, bugsData, statsData] = await Promise.all([
         getProject(id),
         getBugsByProject(id),
         getBugStatistics(id)
       ]);
-      
+
       setProject(projectData);
       setBugs(bugsData);
       setStatistics(statsData);
@@ -90,11 +90,11 @@ const ProjectDetailsPage = () => {
     setSelectedBug(bug);
     setDetailsDialogOpen(true);
   };
-  
+
   const handleFilterChange = (newFilters: { severity: BugSeverity | 'all', status: BugStatus | 'all' }) => {
     setFilters(newFilters);
   };
-  
+
   // Filter bugs based on selected filters
   const filteredBugs = useMemo(() => {
     return bugs.filter(bug => {
@@ -116,8 +116,8 @@ const ProjectDetailsPage = () => {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <ErrorAlert message={error} />
-        <Button 
-          startIcon={<ArrowBackIcon />} 
+        <Button
+          startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/')}
           sx={{ mt: 2 }}
         >
@@ -134,8 +134,8 @@ const ProjectDetailsPage = () => {
           <Typography variant="h6" gutterBottom>
             Project not found
           </Typography>
-          <Button 
-            startIcon={<ArrowBackIcon />} 
+          <Button
+            startIcon={<ArrowBackIcon />}
             onClick={() => navigate('/')}
             sx={{ mt: 2 }}
           >
@@ -150,9 +150,9 @@ const ProjectDetailsPage = () => {
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ mb: 4 }}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link 
-            underline="hover" 
-            color="inherit" 
+          <Link
+            underline="hover"
+            color="inherit"
             sx={{ cursor: 'pointer' }}
             onClick={() => navigate('/')}
           >
@@ -163,8 +163,8 @@ const ProjectDetailsPage = () => {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <IconButton 
-          aria-label="back" 
+        <IconButton
+          aria-label="back"
           onClick={() => navigate('/')}
           sx={{ mr: 1 }}
         >
@@ -182,11 +182,11 @@ const ProjectDetailsPage = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           {statistics && <BugStatisticsCard statistics={statistics} />}
-          
+
           <Box sx={{ mb: 3 }}>
-            <Button 
-              variant="contained" 
-              color="primary" 
+            <Button
+              variant="contained"
+              color="primary"
               startIcon={<AddIcon />}
               fullWidth
               onClick={() => setCreateDialogOpen(true)}
@@ -195,7 +195,7 @@ const ProjectDetailsPage = () => {
             </Button>
           </Box>
         </Grid>
-        
+
         <Grid item xs={12} md={8}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="h5">
@@ -207,11 +207,11 @@ const ProjectDetailsPage = () => {
               </Typography>
             </Box>
           </Box>
-          
+
           <BugFilters onFilterChange={handleFilterChange} />
-          
+
           <Divider sx={{ mb: 3 }} />
-          
+
           {bugs.length === 0 ? (
             <Paper sx={{ p: 4, textAlign: 'center' }}>
               <Typography variant="h6" gutterBottom>
@@ -220,9 +220,9 @@ const ProjectDetailsPage = () => {
               <Typography variant="body1" color="text.secondary" paragraph>
                 Add your first bug to get started.
               </Typography>
-              <Button 
-                variant="contained" 
-                color="primary" 
+              <Button
+                variant="contained"
+                color="primary"
                 startIcon={<AddIcon />}
                 onClick={() => setCreateDialogOpen(true)}
               >
@@ -237,17 +237,17 @@ const ProjectDetailsPage = () => {
               <Typography variant="body1" color="text.secondary" paragraph>
                 Try changing your filter criteria or add a new bug.
               </Typography>
-              <Button 
-                variant="outlined" 
-                color="primary" 
+              <Button
+                variant="outlined"
+                color="primary"
                 onClick={() => setFilters({ severity: 'all', status: 'all' })}
                 sx={{ mr: 2 }}
               >
                 Clear Filters
               </Button>
-              <Button 
-                variant="contained" 
-                color="primary" 
+              <Button
+                variant="contained"
+                color="primary"
                 startIcon={<AddIcon />}
                 onClick={() => setCreateDialogOpen(true)}
               >
@@ -256,9 +256,9 @@ const ProjectDetailsPage = () => {
             </Paper>
           ) : (
             filteredBugs.map((bug) => (
-              <BugCard 
-                key={bug.id} 
-                bug={bug} 
+              <BugCard
+                key={bug.id}
+                bug={bug}
                 onClick={() => handleBugClick(bug)}
               />
             ))
@@ -266,14 +266,14 @@ const ProjectDetailsPage = () => {
         </Grid>
       </Grid>
 
-      <CreateBugDialog 
-        open={createDialogOpen} 
+      <CreateBugDialog
+        open={createDialogOpen}
         projectId={id}
-        onClose={() => setCreateDialogOpen(false)} 
-        onBugCreated={handleBugCreated} 
+        onClose={() => setCreateDialogOpen(false)}
+        onBugCreated={handleBugCreated}
       />
-      
-      <BugDetailsDialog 
+
+      <BugDetailsDialog
         open={detailsDialogOpen}
         bug={selectedBug}
         onClose={() => setDetailsDialogOpen(false)}

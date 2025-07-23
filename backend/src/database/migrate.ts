@@ -6,7 +6,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const pool = new Pool({
-  connectionString: process.env['DATABASE_URL'],
+  host: process.env['DB_HOST'] || 'localhost',
+  port: parseInt(process.env['DB_PORT'] || '5432'),
+  database: process.env['DB_NAME'] || 'bug_tracker',
+  user: process.env['DB_USER'] || 'postgres',
+  password: process.env['DB_PASSWORD'] || 'postgres',
 });
 
 interface Migration {
@@ -26,7 +30,7 @@ async function createMigrationsTable(): Promise<void> {
       executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
-  
+
   await pool.query(query);
 }
 
@@ -59,19 +63,19 @@ function getMigrationFiles(): Migration[] {
  */
 async function executeMigration(migration: Migration): Promise<void> {
   const client = await pool.connect();
-  
+
   try {
     await client.query('BEGIN');
-    
+
     // Execute the migration SQL
     await client.query(migration.sql);
-    
+
     // Record the migration as executed
     await client.query(
       'INSERT INTO migrations (filename) VALUES ($1)',
       [migration.filename]
     );
-    
+
     await client.query('COMMIT');
     console.log(`✅ Executed migration: ${migration.filename}`);
   } catch (error) {
@@ -89,27 +93,27 @@ async function executeMigration(migration: Migration): Promise<void> {
 export async function runMigrations(): Promise<void> {
   try {
     console.log('🚀 Starting database migrations...');
-    
+
     await createMigrationsTable();
-    
+
     const executedMigrations = await getExecutedMigrations();
     const allMigrations = getMigrationFiles();
-    
+
     const pendingMigrations = allMigrations.filter(
       migration => !executedMigrations.includes(migration.filename)
     );
-    
+
     if (pendingMigrations.length === 0) {
       console.log('✅ No pending migrations');
       return;
     }
-    
+
     console.log(`📋 Found ${pendingMigrations.length} pending migrations`);
-    
+
     for (const migration of pendingMigrations) {
       await executeMigration(migration);
     }
-    
+
     console.log('🎉 All migrations completed successfully');
   } catch (error) {
     console.error('💥 Migration failed:', error);
@@ -123,19 +127,19 @@ export async function runMigrations(): Promise<void> {
 export async function resetDatabase(): Promise<void> {
   try {
     console.log('🔄 Resetting database...');
-    
+
     // Drop all tables
     await pool.query(`
       DROP TABLE IF EXISTS bugs CASCADE;
       DROP TABLE IF EXISTS projects CASCADE;
       DROP TABLE IF EXISTS migrations CASCADE;
     `);
-    
+
     console.log('🗑️  Dropped all tables');
-    
+
     // Re-run migrations
     await runMigrations();
-    
+
     console.log('✅ Database reset completed');
   } catch (error) {
     console.error('💥 Database reset failed:', error);
@@ -146,7 +150,7 @@ export async function resetDatabase(): Promise<void> {
 // CLI interface
 if (require.main === module) {
   const command = process.argv[2];
-  
+
   if (command === 'reset') {
     resetDatabase()
       .then(() => process.exit(0))

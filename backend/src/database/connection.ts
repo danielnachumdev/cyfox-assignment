@@ -3,9 +3,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Database configuration
+// Database configuration for Docker PostgreSQL
 const dbConfig = {
-  connectionString: process.env['DATABASE_URL'],
+  host: process.env['DB_HOST'] || 'localhost',
+  port: parseInt(process.env['DB_PORT'] || '5432'),
+  database: process.env['DB_NAME'] || 'bugtracker',
+  user: process.env['DB_USER'] || 'bugtracker',
+  password: process.env['DB_PASSWORD'] || 'bugtracker',
   max: 20, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
   connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
@@ -28,11 +32,11 @@ export async function query<T extends QueryResultRow = any>(
   params?: any[]
 ): Promise<QueryResult<T>> {
   const start = Date.now();
-  
+
   try {
     const result = await pool.query<T>(text, params);
     const duration = Date.now() - start;
-    
+
     if (process.env['NODE_ENV'] === 'development') {
       console.log('Executed query', {
         text,
@@ -40,7 +44,7 @@ export async function query<T extends QueryResultRow = any>(
         rows: result.rowCount,
       });
     }
-    
+
     return result;
   } catch (error) {
     console.error('Database query error:', {
@@ -66,7 +70,7 @@ export async function transaction<T>(
   callback: (client: PoolClient) => Promise<T>
 ): Promise<T> {
   const client = await getClient();
-  
+
   try {
     await client.query('BEGIN');
     const result = await callback(client);

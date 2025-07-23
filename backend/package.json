@@ -4,24 +4,15 @@
   "description": "Backend API for Bug Tracker application",
   "main": "dist/index.js",
   "scripts": {
-    "start": "run-s start:db start:server",
-    "start:server": "node dist/index.js",
-    "start:db": "powershell -Command \"$status = & 'C:\\Program Files\\PostgreSQL\\17\\bin\\pg_ctl.exe' -D '..\\pgdata' status; if ($LASTEXITCODE -ne 0) { & 'C:\\Program Files\\PostgreSQL\\17\\bin\\pg_ctl.exe' -D '..\\pgdata' start }\"",
-    "stop:db": "powershell -Command \"& 'C:\\Program Files\\PostgreSQL\\17\\bin\\pg_ctl.exe' -D '..\\pgdata' stop\"",
-    "start:all": "powershell -Command \"$startDb = Start-Process powershell -ArgumentList '-Command', \\\"& 'C:\\Program Files\\PostgreSQL\\17\\bin\\pg_ctl.exe' -D '..\\pgdata' status; if ($LASTEXITCODE -ne 0) { & 'C:\\Program Files\\PostgreSQL\\17\\bin\\pg_ctl.exe' -D '..\\pgdata' start }\\\" -PassThru; Start-Sleep -Seconds 2; npm run start:server; & 'C:\\Program Files\\PostgreSQL\\17\\bin\\pg_ctl.exe' -D '..\\pgdata' stop\"",
-    "dev": "run-s start:db dev:server",
-    "dev:server": "nodemon src/index.ts",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
     "build": "tsc && npm run copy-migrations",
     "copy-migrations": "powershell -Command \"New-Item -ItemType Directory -Path dist/database/migrations -Force; Copy-Item -Path src/database/migrations/*.sql -Destination dist/database/migrations -Force\"",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:ci": "NODE_ENV=test jest --ci --coverage --watchAll=false",
-    "db:migrate": "ts-node src/database/migrate.ts",
-    "db:reset": "ts-node src/database/migrate.ts reset",
-    "db:seed": "ts-node src/database/seed.ts",
-    "db:reset-seed": "ts-node src/database/seed.ts reset",
-    "db:setup": "npm run db:migrate && npm run db:seed"
+    "seed": "ts-node src/database/seed.ts"
   },
   "keywords": [
     "bug-tracker",
