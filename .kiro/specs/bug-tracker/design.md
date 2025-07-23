@@ -171,6 +171,7 @@ The testing strategy includes multiple levels of testing to ensure application q
 ### Frontend
 
 - **React**: Selected for its component-based architecture, virtual DOM for efficient rendering, and extensive ecosystem. React is preferred over Angular for this project due to its more lightweight nature, faster learning curve, and better fit for smaller applications with focused functionality.
+- **Vite**: Chosen as the build tool for its fast development server, hot module replacement, and optimized production builds. Vite provides better performance than Create React App with faster startup times and more efficient bundling.
 - **React Router**: For client-side routing between pages.
 - **Material-UI**: For pre-built UI components that follow Material Design principles.
 

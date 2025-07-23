@@ -38,9 +38,9 @@
 - **React Query/TanStack Query**: For server state management and caching
 
 ### Development Tools
-- **Create React App**: For project bootstrapping
+- **Vite**: For fast development server and build tooling
 - **React Testing Library**: For component testing
-- **jest**: For unit testing
+- **Vitest**: For unit testing (Vite's native test runner)
 
 ## Database Design
 
