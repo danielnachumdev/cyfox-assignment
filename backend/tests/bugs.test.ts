@@ -102,6 +102,28 @@ describe('Bugs API', () => {
       expect(response.body.success).toBe(false);
       expect(response.body.error.code).toBe('VALIDATION_ERROR');
     });
+
+    it('should return 400 for SQL-injection-shaped sortBy', async () => {
+      const response = await request(app)
+        .get(
+          `/api/projects/${testProject.id}/bugs?sortBy=${encodeURIComponent('title;DROP TABLE bugs;--')}`
+        )
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('should return 400 for SQL-injection-shaped sortOrder', async () => {
+      const response = await request(app)
+        .get(
+          `/api/projects/${testProject.id}/bugs?sortBy=title&sortOrder=${encodeURIComponent('ASC;DROP TABLE bugs;--')}`
+        )
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
   });
 
   describe('GET /api/projects/:projectId/bugs/:bugId', () => {
