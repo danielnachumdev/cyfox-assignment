@@ -28,7 +28,12 @@ Choose your preferred method to run the application:
    npm install
    ```
 
-2. **Start development servers:**
+2. **Start PostgreSQL and apply migrations/seed:**
+   ```bash
+   npm run db:setup
+   ```
+
+3. **Start development servers:**
    ```bash
    npm run dev
    ```
@@ -45,7 +50,7 @@ Choose your preferred method to run the application:
 **Steps:**
 1. **Build and start all services:**
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 
 2. **Access the application:**

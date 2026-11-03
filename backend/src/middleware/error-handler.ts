@@ -22,6 +22,16 @@ export function errorHandler(
     return;
   }
 
+  // express.json() parse failures (malformed body)
+  const bodyParseError = err as Error & { type?: string; status?: number; body?: unknown };
+  if (
+    bodyParseError.type === 'entity.parse.failed' ||
+    (err instanceof SyntaxError && 'body' in err)
+  ) {
+    sendError(res, new AppError('Invalid JSON payload', 400, 'INVALID_JSON'));
+    return;
+  }
+
   // Handle PostgreSQL errors
   if (err.name === 'error' && (err as any).code) {
     const pgError = err as any;
