@@ -28,7 +28,7 @@
     "db:reset": "docker-compose -f docker-compose.yml down -v && npm run db:setup"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
+    "concurrently": "^10.0.6",
     "cross-env": "^7.0.3"
   }
 }
