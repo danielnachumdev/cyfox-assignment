@@ -98,26 +98,50 @@ export function buildWhereClause(
 }
 
 /**
- * Build ORDER BY clause
+ * Allowlisted sort columns → SQL identifier literals.
+ * Values (not the user-supplied key) are what enter the query string.
+ */
+const ORDER_BY_COLUMNS: Readonly<Record<string, string>> = {
+  id: 'id',
+  name: 'name',
+  title: 'title',
+  severity: 'severity',
+  status: 'status',
+  created_at: 'created_at',
+};
+
+/**
+ * Allowlisted sort directions → SQL keyword literals.
+ */
+const ORDER_BY_DIRECTIONS: Readonly<Record<string, string>> = {
+  ASC: 'ASC',
+  DESC: 'DESC',
+};
+
+/**
+ * Build ORDER BY clause from allowlisted column/direction only.
+ * Identifiers cannot be parameterized in Postgres, so we map user input
+ * onto constant SQL fragments instead of interpolating raw strings.
  */
 export function buildOrderByClause(
   sortBy?: string,
-  sortOrder: 'ASC' | 'DESC' = 'ASC'
+  sortOrder: string = 'ASC'
 ): string {
   if (!sortBy) {
     return '';
   }
-  
-  // Whitelist allowed sort columns to prevent SQL injection
-  const allowedColumns = [
-    'id', 'name', 'title', 'severity', 'status', 'created_at'
-  ];
-  
-  if (!allowedColumns.includes(sortBy)) {
+
+  const column = ORDER_BY_COLUMNS[sortBy];
+  if (column === undefined) {
     throw new Error(`Invalid sort column: ${sortBy}`);
   }
-  
-  return `ORDER BY ${sortBy} ${sortOrder}`;
+
+  const direction = ORDER_BY_DIRECTIONS[sortOrder];
+  if (direction === undefined) {
+    throw new Error(`Invalid sort order: ${sortOrder}`);
+  }
+
+  return `ORDER BY ${column} ${direction}`;
 }
 
 /**
