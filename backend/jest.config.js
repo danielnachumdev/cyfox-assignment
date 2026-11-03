@@ -19,5 +19,9 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   testTimeout: 30000,
+  // Shared Docker Postgres; parallel workers race on migrate/reset.
+  maxWorkers: 1,
+  // pg Pool + process signal handlers keep the event loop alive after suites finish.
+  forceExit: true,
   verbose: true,
 };

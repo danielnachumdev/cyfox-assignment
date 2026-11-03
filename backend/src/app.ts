@@ -28,6 +28,8 @@ app.use(helmet({
       imgSrc: ["'self'", "data:", "https:"],
     },
   },
+  // Helmet 8+ defaults to SAMEORIGIN; keep DENY for clickjacking hardening.
+  frameguard: { action: 'deny' },
   crossOriginEmbedderPolicy: false,
 }));
 
